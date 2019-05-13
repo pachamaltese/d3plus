@@ -1,25 +1,34 @@
 library(dplyr)
 library(d3plus2)
 
-dta <- tibble(
+treemap_data <- tibble(
   parent = c(rep("Group 1", 3), rep("Group 2", 2)),
   id = c("alpha", "beta", "gamma", "delta", "eta"),
   value = c(29, 10, 2, 29, 25),
-  icon = c(rep("https://datausa.io/static/images/attrs/thing_apple.png", 3),
-           rep("https://datausa.io/static/images/attrs/thing_fish.png", 2))
+  icon = c(
+    rep("https://datausa.io/static/images/attrs/thing_apple.png", 3),
+    rep("https://datausa.io/static/images/attrs/thing_fish.png", 2)
+  ),
+  color = c(rep("cornflowerblue", 3), rep("firebrick", 2))
 )
 
-d3p <- d3plus() %>%
+d3plus() %>%
   d3p_type("treemap") %>%
-  d3p_data(data = dta, sum = "value") %>%
-  d3p_groupBy(c("parent", "id")) 
-
-d3p %>% 
+  d3p_data(data = treemap_data, sum = "value") %>%
+  d3p_groupBy(c("parent", "id")) %>% 
+  d3p_shapeConfig(
+    hoverOpacity = 0.85,
+    fill = d3p_JSarg("color"),
+    labelConfig = list(
+      fontFamily = "Fira Sans",
+      fontMax = 32
+    )
+  ) %>% 
   d3p_legendConfig(
     shapeConfig = list(
       width = 30,
       height = 30,
-      backgroundImage = JS("function(d) { return d.icon; }")
+      backgroundImage = d3p_JSarg("icon")
     ),
     label = FALSE 
   ) %>% 
@@ -34,25 +43,7 @@ d3p %>%
              }
              "
     ),
-    footer = JS("
-               function(d) {
-               return \"<sub class='tooltip-footer'>This is just an example</sub>\";
-               }
-               "
-    ),
-    title =  JS("
-                function(d) {
-                var txt = d.id;
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                }
-                "
-    )
-  ) %>% 
-  d3p_shapeConfig(
-    labelConfig = list(
-      fontFamily = "Fira Sans",
-      fontMax = 32
-    ),
-    hoverOpacity = 0.85
+    footer = d3p_footer("This is a footer"),
+    title =  d3p_titleCase("id")
   ) %>% 
   d3p_loadingHTML("resizing...")

@@ -1,6 +1,6 @@
 library(dplyr)
 
-comunas <- tibble(
+geomap_data <- tibble(
   commune_name = c("Arica", "Putre"),
   commune_id = c("15101", "15201"),
   value = c(200, 150)
@@ -10,7 +10,7 @@ comunas <- tibble(
 # https://gist.github.com/pachamaltese/ba8597718701e55fc62dc45671e6c841
 d3plus() %>%
   d3p_type("geomap") %>%
-  d3p_data(data = comunas,
+  d3p_data(data = geomap_data,
            topojson = "https://raw.githubusercontent.com/pachamaltese/chilemaps/master/data_topojson/simplified_communes/new/r15.topojson") %>%
   d3p_groupBy("commune_id") %>% 
   d3p_colorScale("value") %>% 
