@@ -1,3 +1,5 @@
+# some functions to reduce JS complexity inside Shiny code
+
 #' @export
 d3p_JSarg <- function(arg = NULL) {
   htmlwidgets::JS(sprintf("function(d) { return d.%s; }", arg))

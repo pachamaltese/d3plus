@@ -23,8 +23,14 @@ HTMLWidgets.widget({
     var chart;
 
     switch (x.type) {
-      case "treemap":
-        chart = new d3plus.Treemap();
+      case "area":
+        chart = new d3plus.AreaPlot();
+        break;
+      case "bar":
+        chart = new d3plus.BarChart();
+        break;
+      case "donut":
+        chart = new d3plus.Donut();
         break;
       case "geomap":
         chart = new d3plus.Geomap();
@@ -32,27 +38,23 @@ HTMLWidgets.widget({
       case "line":
         chart = new d3plus.LinePlot();
         break;
-      case "point":
-        chart = new d3plus.Plot();
-        break;
-      case "bar":
-        chart = new d3plus.BarChart();
-        break;
-      case "area":
-        chart = new d3plus.AreaPlot();
-        break;
-      case "stacked":
-        chart = new d3plus.StackedArea();
+      case "network":
+        chart = new d3plus.Network();
         break;
       case "pie":
         chart = new d3plus.Pie();
         break;
-      case "donut":
-        chart = new d3plus.Donut();
+      case "point":
+        chart = new d3plus.Plot();
         break;
-      case "network":
-        chart = new d3plus.Network();
+      case "stacked":
+        chart = new d3plus.StackedArea();
         break;
+      case "treemap":
+        chart = new d3plus.Treemap();
+        break;
+        
+      /* Box is not working */
       /* TypeError: d3plus.BoxWhisker is not a constructor */
       case "box":
         chart = new d3plus.BoxWhisker();
@@ -64,23 +66,37 @@ HTMLWidgets.widget({
     if (data) {
       chart.data(data);
     }
+    
     if (x.groupBy) {
       chart.groupBy(x.groupBy);
     }
+    
+    // sum means "size" in D3plus 2
     if (x.sum) {
       chart.sum(x.sum);
     }
+    
     if (x.legendConfig) {
       chart.legendConfig(x.legendConfig);
     }
+    
     if (x.tooltipConfig) {
       chart.tooltipConfig(x.tooltipConfig);
     }
+    
     if (x.shapeConfig) {
       chart.shapeConfig(x.shapeConfig);
     }
 
-    // geomap
+    // bar/line/area specific parameters
+    if (x.xaxis) {
+      chart.x(x.xaxis);
+    }
+    if (x.yaxis) {
+      chart.y(x.yaxis);
+    }
+    
+    // geomap specific parameters
     if (x.topojsonId) {
       chart.topojsonId(x.topojsonId);
     }
@@ -90,16 +106,8 @@ HTMLWidgets.widget({
     if (x.colorScale) {
       chart.colorScale(x.colorScale);
     }
-
-    // bar/line chart
-    if (x.xaxis) {
-      chart.x(x.xaxis);
-    }
-    if (x.yaxis) {
-      chart.y(x.yaxis);
-    }
     
-    // loadingMessage
+    // loading/resize message
     if (x.loadingHTML) {
       chart.loadingHTML(x.loadingHTML);
     } else {

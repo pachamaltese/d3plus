@@ -27,14 +27,14 @@ d3p_groupBy <- function(d3p, vars = NULL) {
 }
 
 #' @export
-d3p_tooltipConfig <- function(d3p, ...) {
-  d3p$x$tooltipConfig <- list(...)
+d3p_legendConfig <- function(d3p, ...) {
+  d3p$x$legendConfig <- list(...)
   d3p
 }
 
 #' @export
-d3p_legendConfig <- function(d3p, ...) {
-  d3p$x$legendConfig <- list(...)
+d3p_tooltipConfig <- function(d3p, ...) {
+  d3p$x$tooltipConfig <- list(...)
   d3p
 }
 
@@ -44,12 +44,7 @@ d3p_shapeConfig <- function(d3p, ...) {
   d3p
 }
 
-#' @export
-d3p_topojsonId <- function(d3p, value = NULL) {
-  d3p$x$topojsonId <- value
-  d3p
-}
-
+# axis is specific to bar/line/area type
 #' @export
 d3p_axis <- function(d3p, x = NULL, y = NULL) {
   d3p$x[["xaxis"]] <- x
@@ -57,6 +52,12 @@ d3p_axis <- function(d3p, x = NULL, y = NULL) {
   d3p
 }
 
+# topojsonId & colorScale are specific to geomap type
+#' @export
+d3p_topojsonId <- function(d3p, value = NULL) {
+  d3p$x$topojsonId <- value
+  d3p
+}
 #' @export
 d3p_colorScale <- function(d3p, value = NULL) {
   d3p$x$colorScale <- value
