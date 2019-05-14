@@ -14,12 +14,14 @@ ui <- fluidPage(
       p("Included examples:"),
       HTML(
         "<ul>
-           <li>Area (stacked from v1)</li>
+           <li>Area</li>
            <li>Bar</li>
+           <!--<li>Box and whiskers (not working)</li>-->
            <li>Donut</li>
            <li>Geomap</li>
            <li>Line</li>
            <li>Pie</li>
+           <li>Stacked</li>
            <li>Treemap</li>
         </ul>"
       )
@@ -31,6 +33,9 @@ ui <- fluidPage(
       
       h1("Bar"),
       d3plusOutput("bar", height = "400px"),
+      
+      # h1("Box"),
+      # d3plusOutput("box", height = "400px"),
       
       h1("Donut"),
       d3plusOutput("donut", height = "400px"),
@@ -44,6 +49,9 @@ ui <- fluidPage(
       h1("Pie"),
       d3plusOutput("pie", height = "400px"),
       
+      h1("Stacked"),
+      d3plusOutput("stacked", height = "400px"),
+      
       h1("Treemap"),
       d3plusOutput("treemap", height = "400px")
     )
@@ -51,11 +59,12 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
+  # Data ----
   
   area_data <- tibble(
-    id = c(rep("alpha", 3), rep("beta", 2)),
-    ab1 = letters[1:5],
-    ab2 = c(1,2,5,-1,-2)
+    id = c(rep("alpha", 3), rep("beta", 3)),
+    ab1 = c(4,5,6,4,5,6),
+    ab2 = c(7,25,13,17,8,13)
   )
   
   bar_data <- tibble(
@@ -63,6 +72,16 @@ server <- function(input, output) {
     ab1 = letters[1:4],
     ab2 = c(1,2,5,-1)
   )
+  
+  # box_data <- tibble(
+  #   year = rep(c(1991,1992), 8),
+  #   name = c(rep("alpha", 2), rep("alpha2", 2),
+  #            rep("beta", 2), rep("beta2", 2),
+  #            rep("gamma", 2), rep("gamma2", 2),
+  #            rep("delta", 2), rep("delta2", 2)),
+  #   value = c(15,34,17,65,10,10,40,38,5,10,20,34,50,
+  #             43,17,35)
+  # )
   
   donut_data <- tibble(
     parent = c(rep("Group 1", 3), rep("Group 2", 2)),
@@ -77,15 +96,21 @@ server <- function(input, output) {
   )
   
   line_data <- tibble(
-    id = "alpha",
-    ab1 = c(0,-1,1,0),
-    ab2 = c(1,2,5,0)
+    id = c(rep("alpha", 3), rep("beta", 3)),
+    ab1 = c(4,5,6,4,5,6),
+    ab2 = c(7,25,13,17,8,13)
   )
   
   pie_data <- tibble(
     parent = c(rep("Group 1", 3), rep("Group 2", 2)),
     id = c("alpha", "beta", "gamma", "delta", "eta"),
     value = c(29, 10, 2, 29, 25)
+  )
+  
+  stacked_data <- tibble(
+    id = c(rep("alpha", 3), rep("beta", 3)),
+    ab1 = c(4,5,6,4,5,6),
+    ab2 = c(7,25,13,17,8,13)
   )
   
   treemap_data <- tibble(
@@ -98,12 +123,13 @@ server <- function(input, output) {
     ),
     color = c(rep("cornflowerblue", 3), rep("firebrick", 2))
   )
+
+  # Output ----
   
   output$area <- renderD3plus({
     d3plus() %>%
       d3p_type("area") %>%
       d3p_data(data = area_data) %>%
-      d3p_groupBy("id") %>%  
       d3p_axis(x = "ab1", y = "ab2") %>% 
       d3p_shapeConfig(
         hoverOpacity = 0.85
@@ -122,6 +148,14 @@ server <- function(input, output) {
       ) %>% 
       d3p_loadingHTML("resizing...")
   })
+  
+  # output$box <- renderD3plus({
+  #   d3plus() %>%
+  #     d3p_type("box") %>%
+  #     d3p_data(data = box_data) %>%
+  #     d3p_groupBy("name") %>% 
+  #     d3p_axis(x = "year", y = "value")
+  # })
   
   output$donut <- renderD3plus({
     d3plus() %>%
@@ -186,6 +220,18 @@ server <- function(input, output) {
       d3p_type("pie") %>%
       d3p_data(data = pie_data) %>%
       d3p_groupBy("id") %>% 
+      d3p_shapeConfig(
+        hoverOpacity = 0.85
+      ) %>% 
+      d3p_loadingHTML("resizing...")
+  })
+  
+  output$stacked <- renderD3plus({
+    d3plus() %>%
+      d3p_type("stacked") %>%
+      d3p_data(data = stacked_data) %>%
+      d3p_groupBy("id") %>%  
+      d3p_axis(x = "ab1", y = "ab2") %>% 
       d3p_shapeConfig(
         hoverOpacity = 0.85
       ) %>% 

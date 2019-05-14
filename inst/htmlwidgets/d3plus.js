@@ -41,11 +41,21 @@ HTMLWidgets.widget({
       case "area":
         chart = new d3plus.AreaPlot();
         break;
+      case "stacked":
+        chart = new d3plus.StackedArea();
+        break;
       case "pie":
         chart = new d3plus.Pie();
         break;
       case "donut":
         chart = new d3plus.Donut();
+        break;
+      case "network":
+        chart = new d3plus.Network();
+        break;
+      /* TypeError: d3plus.BoxWhisker is not a constructor */
+      case "box":
+        chart = new d3plus.BoxWhisker();
         break;
       default:
         chart = null;
