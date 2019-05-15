@@ -20,7 +20,9 @@ ui <- fluidPage(
            <li>Donut</li>
            <li>Geomap</li>
            <li>Line</li>
+           <li>Network (WIP)</li>
            <li>Pie</li>
+           <li>Scatterplot</li>
            <li>Stacked</li>
            <li>Treemap</li>
         </ul>"
@@ -48,6 +50,9 @@ ui <- fluidPage(
       
       h1("Pie"),
       d3plusOutput("pie", height = "400px"),
+      
+      h1("Scatterplot"),
+      d3plusOutput("scatterplot", height = "400px"),
       
       h1("Stacked"),
       d3plusOutput("stacked", height = "400px"),
@@ -105,6 +110,13 @@ server <- function(input, output) {
     parent = c(rep("Group 1", 3), rep("Group 2", 2)),
     id = c("alpha", "beta", "gamma", "delta", "eta"),
     value = c(29, 10, 2, 29, 25)
+  )
+  
+  scatterplot_data <- tibble(
+    x = c(4,5,6),
+    y = c(7,2,13),
+    value = c(240,120,180),
+    type = c("alpha", "beta", "gamma")
   )
   
   stacked_data <- tibble(
@@ -224,6 +236,15 @@ server <- function(input, output) {
         hoverOpacity = 0.85
       ) %>% 
       d3p_loadingHTML("resizing...")
+  })
+  
+  output$scatterplot <- renderD3plus({
+    d3plus() %>%
+      d3p_type("scatter") %>%
+      d3p_data(data = scatterplot_data) %>%
+      d3p_groupBy("type") %>% 
+      d3p_axis(x = "x", y = "y") %>% 
+      d3p_size(size = "value", size_min = 20, size_max = 100)
   })
   
   output$stacked <- renderD3plus({

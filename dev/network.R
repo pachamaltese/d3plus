@@ -1,4 +1,4 @@
-# Not working
+# Not fully working
 # check example here http://d3plus.org/examples/d3plus-network/getting-started/
 
 library(dplyr)

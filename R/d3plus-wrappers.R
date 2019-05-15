@@ -7,27 +7,21 @@ d3p_JSarg <- function(arg = NULL) {
 
 #' @export
 d3p_titleCase <- function(arg = NULL) {
-  htmlwidgets::JS(sprintf(
-      "
-        function(d) {
-        var txt = d.%s;
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        }
-      ",
-      arg
+  htmlwidgets::JS(
+    sprintf("function(d) {
+      var txt = d.%s;
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }", arg
     )
   )
 }
 
 #' @export
 d3p_footer <- function(arg = NULL) {
-  htmlwidgets::JS(sprintf(
-    "
-      function(d) {
+  htmlwidgets::JS(
+    sprintf("function(d) {
       return \"<sub class='tooltip-footer'>%s</sub>\";
-      }
-    ",
-    arg
-  )
+    }", arg
+    )
   )
 }

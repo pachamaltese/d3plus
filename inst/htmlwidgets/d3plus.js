@@ -13,15 +13,21 @@ HTMLWidgets.widget({
     document.getElementById(el.id).innerHTML = "";
 
     var data = HTMLWidgets.dataframeToD3(x.data) || false;
-
+    var nodes = HTMLWidgets.dataframeToD3(x.nodes) || false;
+    var links = HTMLWidgets.dataframeToD3(x.links) || false;
+    
     console.log(x);
     console.log(data);
+    console.log(nodes);
+    console.log(links);
 
     window.x = x;
     window.el = el;
 
     var chart;
 
+    // visualization method
+    
     switch (x.type) {
       case "area":
         chart = new d3plus.AreaPlot();
@@ -44,7 +50,10 @@ HTMLWidgets.widget({
       case "pie":
         chart = new d3plus.Pie();
         break;
-      case "point":
+      case "radar":
+        chart = new d3plus.Radar();
+        break;
+      case "scatter":
         chart = new d3plus.Plot();
         break;
       case "stacked":
@@ -63,29 +72,24 @@ HTMLWidgets.widget({
         chart = null;
     }
 
+    // common arguments
     if (data) {
       chart.data(data);
     }
-    
     if (x.groupBy) {
       chart.groupBy(x.groupBy);
     }
-    
-    // sum means "size" in D3plus 2
     if (x.sum) {
-      chart.sum(x.sum);
+      chart.sum(x.sum); // sum means "size" in D3plus 2
     }
-    
     if (x.legendConfig) {
       chart.legendConfig(x.legendConfig);
     }
-    
-    if (x.tooltipConfig) {
-      chart.tooltipConfig(x.tooltipConfig);
-    }
-    
     if (x.shapeConfig) {
       chart.shapeConfig(x.shapeConfig);
+    }
+    if (x.tooltipConfig) {
+      chart.tooltipConfig(x.tooltipConfig);
     }
 
     // bar/line/area specific parameters
@@ -107,6 +111,33 @@ HTMLWidgets.widget({
       chart.colorScale(x.colorScale);
     }
     
+    // network specific parameters
+    if (x.nodes) {
+      chart.nodes(nodes);
+    }
+    if (x.links) {
+      chart.links(links);
+    }
+    
+    // radar specific parameters
+    if (x.metric) {
+      chart.metric(x.metric);
+    }
+    if (x.value) {
+      chart.value(x.value);
+    }
+    
+    // scatterplot specific parameters
+    if (x.size) {
+      chart.size(x.size);
+    }
+    if (x.sizeMin) {
+      chart.sizeMin(x.sizeMin);
+    }
+    if (x.sizeMax) {
+      chart.sizeMax(x.sizeMax);
+    }
+    
     // loading/resize message
     if (x.loadingHTML) {
       chart.loadingHTML(x.loadingHTML);
@@ -114,7 +145,7 @@ HTMLWidgets.widget({
       chart.loadingHTML(
         `
         <div style='background-color: rgba(211,211,211,0.7)'>
-          <sub style='margin-top: 0;'>Resizing...</sub>
+          <sub style='margin-top: 0;'>Loading...</sub>
         </div>  
       `
       );

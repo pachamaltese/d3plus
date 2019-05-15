@@ -5,7 +5,8 @@ d3p_type <- function(d3p, type = NULL) {
 }
 
 #' @export
-d3p_data <- function(d3p, data = NULL, sum = NULL, nodes = NULL, links = NULL, topojson = NULL) {
+d3p_data <- function(d3p, data = NULL, nodes = NULL, links = NULL, topojson = NULL,
+                     sum = NULL, metric = NULL, value = NULL) {
   stopifnot(
     is.null(data) | is.data.frame(data),
     is.null(nodes) | is.data.frame(nodes),
@@ -15,8 +16,9 @@ d3p_data <- function(d3p, data = NULL, sum = NULL, nodes = NULL, links = NULL, t
   d3p$x[["data"]] <- data
   d3p$x[["links"]] <- links
   d3p$x[["nodes"]] <- nodes
-  d3p$x[["sum"]] <- sum
   d3p$x[["topojson"]] <- topojson
+  d3p$x[["metric"]] <- metric
+  d3p$x[["value"]] <- value
   d3p
 }
 
@@ -29,6 +31,14 @@ d3p_groupBy <- function(d3p, vars = NULL) {
 #' @export
 d3p_legendConfig <- function(d3p, ...) {
   d3p$x$legendConfig <- list(...)
+  d3p
+}
+
+#' @export
+d3p_size <- function(d3p, size = NULL, size_min = NULL, size_max = NULL) {
+  d3p$x[["size"]] <- size
+  d3p$x[["sizeMin"]] <- size_min
+  d3p$x[["sizeMax"]] <- size_max
   d3p
 }
 
