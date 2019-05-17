@@ -79,3 +79,9 @@ d3p_loadingHTML <- function(d3p, value = NULL) {
   d3p$x$loadingHTML <- value
   d3p
 }
+
+#' @export
+d3p_center <- function(d3p, center = NULL) {
+  d3p$x[["center"]] <- center
+  d3p
+}

@@ -1,7 +1,7 @@
 #' An `htmlwidget` interface to the
 #' d3plus javascript chart library
 #'
-#' @name d3plus2
+#' @name d3plus
 #' @docType package
 #' @author Mauricio Vargas
 NULL

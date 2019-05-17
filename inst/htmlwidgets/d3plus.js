@@ -35,6 +35,9 @@ HTMLWidgets.widget({
       case "bar":
         chart = new d3plus.BarChart();
         break;
+      case "bubbles":
+        chart = new d3plus.Pack();
+        break;
       case "donut":
         chart = new d3plus.Donut();
         break;
@@ -52,6 +55,9 @@ HTMLWidgets.widget({
         break;
       case "radar":
         chart = new d3plus.Radar();
+        break;
+      case "rings":
+        chart = new d3plus.Rings();
         break;
       case "scatter":
         chart = new d3plus.Plot();
@@ -117,6 +123,11 @@ HTMLWidgets.widget({
     }
     if (x.links) {
       chart.links(links);
+    }
+    
+    // rings specific arguments
+    if (x.center) {
+      chart.center(x.center);
     }
     
     // radar specific parameters

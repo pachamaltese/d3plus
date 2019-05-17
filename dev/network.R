@@ -2,7 +2,7 @@
 # check example here http://d3plus.org/examples/d3plus-network/getting-started/
 
 library(dplyr)
-library(d3plus2)
+library(d3plus)
 
 network_data <- tibble(
   name = c("alpha", "beta", "gamma", "theta", "zeta", "epsilon"),

@@ -2,6 +2,7 @@
 
 export(d3p_JSarg)
 export(d3p_axis)
+export(d3p_center)
 export(d3p_colorScale)
 export(d3p_data)
 export(d3p_footer)

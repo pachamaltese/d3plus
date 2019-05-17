@@ -1,5 +1,5 @@
 library(dplyr)
-library(d3plus2)
+library(d3plus)
 
 treemap_data <- tibble(
   parent = c(rep("Group 1", 3), rep("Group 2", 2)),
@@ -15,7 +15,7 @@ treemap_data <- tibble(
 d3plus() %>%
   d3p_type("treemap") %>%
   d3p_data(data = treemap_data, sum = "value") %>%
-  d3p_groupBy(c("parent", "id")) %>% 
+  d3p_groupBy(c("parent", "id")) %>%
   d3p_shapeConfig(
     hoverOpacity = 0.85,
     fill = d3p_JSarg("color"),
@@ -23,29 +23,28 @@ d3plus() %>%
       fontFamily = "Fira Sans",
       fontMax = 32
     )
-  ) %>% 
+  ) %>%
   d3p_legendConfig(
     shapeConfig = list(
       width = 30,
       height = 30,
       backgroundImage = d3p_JSarg("icon")
     ),
-    label = FALSE 
-  ) %>% 
-  # d3p_tooltipConfig(
-  #   # https://jsfiddle.net/0y9ku3vz/1/
-  #   body = JS('
-  #   function(d) {
-  #       var table = "<table class=\'tooltip-table\'>";
-  #       table += "<tr><td class=\'title\'>Value:</td><td class=\'data\'>" +  d.value + "</td></tr>";
-  #       table += "<tr><td class=\'title\'>Share:</td><td class=\'data\'>" +  Math.round((d.value / 100) * 100) + "%" + "</td></tr>";
-  #       table += "</table>";
-  #       
-  #       return table;
-  #   }
-  #            '
-  #   ),
-  #   footer = d3p_footer("This is a footer"),
-  #   title =  d3p_titleCase("id")
-  # ) %>% 
+    label = FALSE
+  ) %>%
+  d3p_tooltipConfig(
+    # https://jsfiddle.net/0y9ku3vz/1/
+    body = JS('
+    function(d) {
+        var table = "<table class=\'tooltip-table\'>";
+        table += "<tr><td class=\'title\'>Value:</td><td class=\'data\'>" +  d.value + "</td></tr>";
+        table += "</table>";
+
+        return table;
+    }
+             '
+    ),
+    footer = d3p_footer("This is a footer"),
+    title =  d3p_titleCase("id")
+  ) %>%
   d3p_loadingHTML("resizing...")

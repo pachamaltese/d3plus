@@ -2,7 +2,7 @@
 # check example here http://d3plus.org/examples/d3plus-plot/radar-chart/
 
 library(dplyr)
-library(d3plus2)
+library(d3plus)
 
 radar_data <- tibble(
   name = c(rep("alpha", 3), rep("beta", 3)),

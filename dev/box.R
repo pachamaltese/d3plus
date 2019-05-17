@@ -2,7 +2,7 @@
 # check example here http://d3plus.org/examples/d3plus-plot/box-whisker/
 
 library(dplyr)
-library(d3plus2)
+library(d3plus)
 
 box_data <- tibble(
   id = c(rep("alpha", 8), rep("beta", 8)),
@@ -12,5 +12,5 @@ box_data <- tibble(
 d3plus() %>%
   d3p_type("box") %>%
   d3p_data(data = box_data) %>%
-  d3p_groupBy(c("id", "value")) %>% 
+  d3p_groupBy(c("id", "value")) %>%
   d3p_axis(x = "id", y = "value")
